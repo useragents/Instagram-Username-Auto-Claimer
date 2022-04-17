@@ -29,15 +29,12 @@ class Instagram:
         ctypes.windll.kernel32.SetConsoleTitleW(
             f"Instagram Auto Claimer | Attempts: {self.attempts} | Retries: {self.retries} | Proxy Errors: {self.proxy_errors} | Developed by @useragents on Github"
         )
-    
-    def safe_print(self, arg):
-        self.lock.acquire()
-        print(arg)
-        self.lock.release()
 
     def print_console(self, arg):
+        self.lock.acquire()
         self.safe_print(f"\n       {Fore.WHITE}[{Fore.LIGHTMAGENTA_EX}Console{Fore.WHITE}] {arg}")
-    
+        self.lock.release()
+
     def get_csrf_token(self):
         headers = {
             "Accept": "*/*",
@@ -103,7 +100,7 @@ class Instagram:
     
     def load_proxies(self):
         if not os.path.exists("proxies.txt"):
-            self.print_console("File proxies.txt not found")
+            self.print_console("File proxies.txt not found. Exit in 10 seconds")
             time.sleep(10)
             os._exit(0)
         with open("proxies.txt", "r", encoding = "UTF-8") as f:
@@ -166,18 +163,18 @@ class Instagram:
         csrf_token = self.login(username, password)
         email_address = self.get_email(csrf_token)
         
-        def thread_starter():
-            self.claim_username(target, csrf_token, email_address, self.proxies[self.counter])
+        thread_args = (target, csrf_token, email_address, self.proxies[self.counter])
+
         while self.claiming:
             if threading.active_count() <= threads:
                 try:
-                    threading.Thread(target = thread_starter).start()
+                    threading.Thread(target = self.claim_username, args=thread_args).start()
                     self.counter += 1
                 except:
                     pass
                 if len(self.proxies) <= self.counter: #Loop through proxy list
                     self.counter = 0
             
-        
-obj = Instagram()
-obj.main()
+
+if __name__ == "__main__":
+    Instagram().main()
