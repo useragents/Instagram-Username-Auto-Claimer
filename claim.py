@@ -87,6 +87,8 @@ class Instagram:
                 self.print_console(f"Invalid credentials")
         else:
             print(r.text)
+            input()
+            os._exit(0)
     
     def get_email(self, csrf_token: str):
         headers = {
@@ -99,7 +101,9 @@ class Instagram:
             self.url + "/accounts/edit/",
             headers = headers
         )
-        return r.text.split('"email":"')[1].split('"')[0]
+        email = r.text.split('"email":"')[1].split('"')[0]
+        name = r.text.split('"first_name":"')[1].split('"')[0]
+        return email, name
     
     def load_proxies(self):
         if not os.path.exists("proxies.txt"):
@@ -115,7 +119,7 @@ class Instagram:
                 time.sleep(10)
                 os._exit(0)
     
-    def claim_username(self, target, csrf_token, email_address, proxy):
+    def claim_username(self, target, csrf_token, email_address, name, proxy):
         headers = {
             "Accept": "*/*",
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36",
@@ -125,6 +129,7 @@ class Instagram:
         data = {
             "username": target,
             "email": email_address,
+            "first_name": name,
         }
         try:
             r = self.session.post(
@@ -164,10 +169,10 @@ class Instagram:
         target = str(input(f"       {Fore.WHITE}[{Fore.LIGHTMAGENTA_EX}Console{Fore.WHITE}] Target: @"))
         threads = int(input(f"       {Fore.WHITE}[{Fore.LIGHTMAGENTA_EX}Console{Fore.WHITE}] Threads: "))
         csrf_token = self.login(username, password)
-        email_address = self.get_email(csrf_token)
+        email_address, name = self.get_email(csrf_token)
         
         def thread_starter():
-            self.claim_username(target, csrf_token, email_address, self.proxies[self.counter])
+            self.claim_username(target, csrf_token, email_address, name, self.proxies[self.counter])
         while self.claiming:
             if threading.active_count() <= threads:
                 try:
@@ -181,3 +186,4 @@ class Instagram:
         
 obj = Instagram()
 obj.main()
+input()
