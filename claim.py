@@ -12,6 +12,12 @@ ascii_text = """
        | | | | \__ \ || (_| |
        |_|_| |_|___/\__\__,_|"""
 
+if platform.system() == "Windows":
+    clear = "cls"
+else:
+    clear = "clear"
+
+
 class Instagram:
 
     def __init__(self):
@@ -26,9 +32,10 @@ class Instagram:
         self.counter = 0
 
     def change_title(self):
-        ctypes.windll.kernel32.SetConsoleTitleW(
-            f"Instagram Auto Claimer | Attempts: {self.attempts} | Retries: {self.retries} | Proxy Errors: {self.proxy_errors} | Developed by @useragents on Github"
-        )
+        if clear == "cls":
+            ctypes.windll.kernel32.SetConsoleTitleW(
+                f"Instagram Auto Claimer | Attempts: {self.attempts} | Retries: {self.retries} | Proxy Errors: {self.proxy_errors} | Developed by @useragents on Github"
+            )
     
     def safe_print(self, arg):
         self.lock.acquire()
@@ -160,8 +167,9 @@ class Instagram:
         self.change_title()
     
     def main(self):
-        os.system("cls")
-        ctypes.windll.kernel32.SetConsoleTitleW("Instagram Auto Claimer | Developed by @useragents on Github")
+        os.system(clear)
+        if clear == "cls":
+            ctypes.windll.kernel32.SetConsoleTitleW("Instagram Auto Claimer | Developed by @useragents on Github")
         print(Fore.LIGHTMAGENTA_EX + ascii_text)
         self.load_proxies()
         username = str(input(f"\n       {Fore.WHITE}[{Fore.LIGHTMAGENTA_EX}Console{Fore.WHITE}] Username: @"))
