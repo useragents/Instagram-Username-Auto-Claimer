@@ -1,5 +1,5 @@
 try:
-    import requests, os, threading, ctypes, time
+    import requests, os, threading, ctypes, time, platform
     from colorama import Fore
 except ImportError:
     input("Error while importing modules. Please install the modules in requirements.txt")
