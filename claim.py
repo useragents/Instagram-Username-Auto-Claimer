@@ -143,7 +143,7 @@ class Instagram:
                 self.url + "/accounts/edit/",
                 headers = headers,
                 data = data,
-                proxies = {"https": "https://{}".format(proxy)}
+                proxies = {"https": "http://{}".format(proxy)}
             )
         except:
             self.proxy_errors += 1
