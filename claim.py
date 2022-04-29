@@ -27,6 +27,7 @@ class Instagram:
         self.claiming = True
         self.proxy_errors = 0
         self.proxies = []
+        self.errors = 0
         self.attempts = 0
         self.retries = 0
         self.counter = 0
@@ -34,7 +35,7 @@ class Instagram:
     def change_title(self):
         if clear == "cls":
             ctypes.windll.kernel32.SetConsoleTitleW(
-                f"Instagram Auto Claimer | Attempts: {self.attempts} | Retries: {self.retries} | Proxy Errors: {self.proxy_errors} | Developed by @useragents on Github"
+                f"Instagram Auto Claimer | Attempts: {self.attempts} | Retries: {self.retries} | Proxy Errors: {self.proxy_errors} | Errors: {self.errors} | Developed by @useragents on Github"
             )
     
     def safe_print(self, arg):
@@ -138,12 +139,13 @@ class Instagram:
             "email": email_address,
             "first_name": name,
         }
+        proxies = {"https": "http://{}".format(proxy)}
         try:
             r = self.session.post(
                 self.url + "/accounts/edit/",
                 headers = headers,
                 data = data,
-                proxies = {"https": "http://{}".format(proxy)}
+                proxies = proxies
             )
         except:
             self.proxy_errors += 1
@@ -156,14 +158,14 @@ class Instagram:
                 elif "wait a few minutes" in r.text:
                     self.retries += 1
                 else:
-                    print(r.text)
+                    self.errors += 1
             elif r.json()["status"] == "ok":
                 self.print_console(f"Successfully claimed @{target}")
                 self.claiming = False
             else:
-                print(r.text)
+                self.errors += 1
         else:
-            print(r.text)
+            self.errors += 1
         self.change_title()
     
     def main(self):
