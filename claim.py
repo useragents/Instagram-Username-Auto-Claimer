@@ -115,7 +115,8 @@ class Instagram:
     
     def load_proxies(self):
         if not os.path.exists("proxies.txt"):
-            self.print_console("File proxies.txt not found")
+            open('proxies.txt', 'a').close()
+            self.print_console("No proxies loaded in proxies.txt")
             time.sleep(10)
             os._exit(0)
         with open("proxies.txt", "r", encoding = "UTF-8") as f:
