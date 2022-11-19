@@ -3,7 +3,7 @@
 
   # Instagram Username Auto Claimer
   <h1>
-🌟 Join my Discord server <a href="https://discord.gg/rDGsC2rwVv">here</a> 🌟
+🌟 Join my Discord server <a href="https://discord.gg/NrnKpUYjWR">here</a> 🌟
 </h1>
   Fast and multi-threaded script to automatically claim targeted username. Click <a href="https://github.com/useragents/Instagram-Username-Auto-Claimer/issues">here</a> to report bugs.
   
