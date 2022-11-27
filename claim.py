@@ -109,8 +109,13 @@ class Instagram:
             self.url + "/accounts/edit/",
             headers = headers
         )
-        email = r.text.split('"email":"')[1].split('"')[0]
-        name = r.text.split('"first_name":"')[1].split('"')[0]
+        try:
+            email = r.text.split('"email":"')[1].split('"')[0]
+            name = r.text.split('"first_name":"')[1].split('"')[0]
+        except IndexError:
+            print("Error getting email + name on Insta account.\nPlease enter the exact full name (not username) on your insta account and email.")
+            email = input("\n email address: ")
+            email = input("\n full name on insta: ")
         return email, name
     
     def load_proxies(self):
